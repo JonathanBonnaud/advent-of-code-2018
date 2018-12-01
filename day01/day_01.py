@@ -20,3 +20,23 @@ class Day012(AbstractDay):
             res += self.input_content[i]
             i += 1
         return res
+
+
+class Day012Other(AbstractDay):
+
+    def __init__(self, input_content):
+        super().__init__(input_content)
+        self.tot = 0
+        self.seen = {0}
+
+    def cond(self, x):
+        self.tot += x
+        if self.tot in self.seen:
+            return True
+        else:
+            self.seen.add(self.tot)
+            return False
+
+    def get_result(self):
+        res = next((self.tot for x in self.input_content if self.cond(x)), None)
+        return res if res is not None else self.get_result()
