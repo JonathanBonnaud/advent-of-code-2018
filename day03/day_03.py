@@ -1,4 +1,5 @@
 import re
+import numpy as np
 from abstract_day import AbstractDay
 
 
@@ -33,3 +34,23 @@ class Day03Second(Day03First):
         self.check_elf_claims(matrix, self.input_content)
         overlaps = set().union(*[set(cell[0]) for line in matrix for cell in line if cell[1] > 1])
         return set().union(*[cell[0] for line in matrix for cell in line if cell[1] == 1 and not (cell[0] & overlaps)])
+
+
+class Day03FirstBest(AbstractDay):
+
+    def get_result(self):
+        matrix = np.zeros((1, 1))
+        for claim in self.input_content:
+            parts = re.findall('#(\d+) @ (\d+),(\d+): (\d+)x(\d+)', claim)
+            parts = list(map(int, list(parts[0])))
+            x_offset, x_limit, y_offset, y_limit = parts[2], parts[4], parts[1], parts[3]
+
+            x_size = x_offset + x_limit - matrix.shape[0]
+            y_size = y_offset + y_limit - matrix.shape[1]
+            new_shape = (
+                x_size if x_size > 0 else 0,
+                y_size if y_size > 0 else 0
+            )
+            matrix = np.pad(matrix, ((0, new_shape[0]), (0, new_shape[1])), mode='constant')
+            matrix[x_offset:x_offset+x_limit, y_offset:y_offset+y_limit] += 1
+        return len(matrix[np.where(matrix > 1.0)])
