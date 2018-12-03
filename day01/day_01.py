@@ -1,13 +1,13 @@
 from abstract_day import AbstractDay
 
 
-class Day01(AbstractDay):
+class Day01First(AbstractDay):
 
     def get_result(self):
         return sum(self.input_content)
 
 
-class Day012(AbstractDay):
+class Day01Second(AbstractDay):
 
     def get_result(self):
         res = 0
@@ -22,7 +22,7 @@ class Day012(AbstractDay):
         return res
 
 
-class Day012Other(AbstractDay):
+class Day01SecondBis(AbstractDay):
 
     def __init__(self, input_content):
         super().__init__(input_content)
