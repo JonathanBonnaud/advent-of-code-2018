@@ -39,18 +39,11 @@ class Day03Second(Day03First):
 class Day03FirstBest(AbstractDay):
 
     def get_result(self):
-        matrix = np.zeros((1, 1))
+        matrix = np.zeros((1000, 1000))
+        regex = re.compile('#(\d+) @ (\d+),(\d+): (\d+)x(\d+)')
         for claim in self.input_content:
-            parts = re.findall('#(\d+) @ (\d+),(\d+): (\d+)x(\d+)', claim)
-            parts = list(map(int, list(parts[0])))
-            x_offset, x_limit, y_offset, y_limit = parts[2], parts[4], parts[1], parts[3]
+            parts = list(map(int, regex.search(claim).groups()))
 
-            x_size = x_offset + x_limit - matrix.shape[0]
-            y_size = y_offset + y_limit - matrix.shape[1]
-            new_shape = (
-                x_size if x_size > 0 else 0,
-                y_size if y_size > 0 else 0
-            )
-            matrix = np.pad(matrix, ((0, new_shape[0]), (0, new_shape[1])), mode='constant')
+            i, y_offset, x_offset, y_limit, x_limit = parts
             matrix[x_offset:x_offset+x_limit, y_offset:y_offset+y_limit] += 1
         return len(matrix[np.where(matrix > 1.0)])
