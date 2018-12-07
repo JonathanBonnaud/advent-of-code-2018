@@ -10,7 +10,7 @@ class AbstractDay:
     def __init__(self, input_content):
         self.input_content = input_content
 
-    def get_result(self):
+    def get_result(self, *args):
         """
         Method that must be implement for all problems.
         :return: The result of the problem
